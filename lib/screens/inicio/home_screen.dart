@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../blocs/blocs.dart';
 import '../../helpers/helpers.dart';
@@ -1031,6 +1032,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 : Container(),
             const Divider(color: Colors.white, height: 1),
+
+            Row(
+              children: [
+                Expanded(
+                  child: ExpansionTile(
+                    collapsedIconColor: Colors.white,
+                    iconColor: Colors.white,
+                    leading: const Icon(Icons.info, color: Colors.white),
+                    title: const Text(
+                      'Acerca de',
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.privacy_tip,
+                            color: Colors.white,
+                          ),
+                          tileColor: const Color(0xff8c8c94),
+                          title: const Text(
+                            'Política de Privacidad',
+                            style: TextStyle(fontSize: 15, color: Colors.white),
+                          ),
+                          onTap: () {
+                            _launchURL();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const Divider(color: Colors.white, height: 1),
+
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.white),
               tileColor: const Color(0xff8c8c94),
@@ -1047,6 +1086,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  //----------------------- _launchURL -------------------------------
+  void _launchURL() async {
+    if (!await launch('https://www.keypress.com.ar/privacidad.html')) {
+      throw 'No se puede conectar a la Web Política de Privacidad';
+    }
   }
 
   //---------------------------------------------------------------
